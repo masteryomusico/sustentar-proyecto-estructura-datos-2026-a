@@ -1,0 +1,905 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual Web · Estructuras de Datos</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #060810;
+      --bg2: #0c1020;
+      --panel: #0f1628;
+      --border: rgba(99,179,255,0.12);
+      --glow: #3b82f6;
+      --glow2: #06b6d4;
+      --glow3: #8b5cf6;
+      --text: #e2e8f0;
+      --muted: #64748b;
+      --accent: #38bdf8;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CURSOR */
+    #cursor {
+      position: fixed;
+      width: 12px; height: 12px;
+      background: var(--accent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%,-50%);
+      transition: transform 0.1s, background 0.2s;
+      mix-blend-mode: screen;
+    }
+    #cursor-ring {
+      position: fixed;
+      width: 36px; height: 36px;
+      border: 1px solid rgba(56,189,248,0.4);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%,-50%);
+      transition: transform 0.18s cubic-bezier(0.25,0.46,0.45,0.94), width 0.2s, height 0.2s;
+    }
+
+    /* BACKGROUND GRID */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(99,179,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(99,179,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* NOISE OVERLAY */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.4;
+    }
+
+    /* ── HERO ── */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 20px;
+      overflow: hidden;
+    }
+
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.15;
+      animation: drift 12s ease-in-out infinite;
+    }
+    .hero-orb.a { width: 500px; height: 500px; background: var(--glow); top: -100px; left: -100px; animation-delay: 0s; }
+    .hero-orb.b { width: 400px; height: 400px; background: var(--glow3); bottom: -80px; right: -80px; animation-delay: -4s; }
+    .hero-orb.c { width: 300px; height: 300px; background: var(--glow2); top: 40%; left: 60%; animation-delay: -8s; }
+
+    @keyframes drift {
+      0%,100% { transform: translate(0,0) scale(1); }
+      50% { transform: translate(30px,-30px) scale(1.05); }
+    }
+
+    .hero-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.2s forwards;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.5rem, 7vw, 5.5rem);
+      font-weight: 800;
+      line-height: 1.05;
+      letter-spacing: -0.03em;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.4s forwards;
+    }
+
+    .hero h1 span {
+      background: linear-gradient(135deg, var(--accent), var(--glow3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.1rem;
+      color: var(--muted);
+      max-width: 480px;
+      line-height: 1.7;
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.6s forwards;
+    }
+
+    .hero-stats {
+      display: flex;
+      gap: 40px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.8s forwards;
+    }
+    .stat {
+      text-align: center;
+    }
+    .stat-num {
+      display: block;
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--accent);
+      font-family: 'Space Mono', monospace;
+    }
+    .stat-label {
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      animation: fadeUp 0.8s 1.2s forwards;
+    }
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+    @keyframes scrollPulse {
+      0%,100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── TOPICS GRID ── */
+    .topics {
+      position: relative;
+      z-index: 1;
+      padding: 80px 40px;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 48px;
+    }
+    .section-title {
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .section-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .section-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--muted);
+      letter-spacing: 2px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      position: relative;
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 28px 28px 24px;
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), border-color 0.3s, box-shadow 0.3s;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    .card.visible {
+      animation: cardIn 0.5s forwards;
+    }
+    @keyframes cardIn {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 0.3s;
+      border-radius: inherit;
+    }
+    .card:hover::before { opacity: 1; }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(56,189,248,0.3);
+      box-shadow: 0 20px 60px rgba(56,189,248,0.08), 0 0 0 1px rgba(56,189,248,0.1);
+    }
+
+    /* Color variants per card */
+    .card[data-color="blue"]::before { background: radial-gradient(circle at top left, rgba(59,130,246,0.07), transparent 60%); }
+    .card[data-color="cyan"]::before { background: radial-gradient(circle at top left, rgba(6,182,212,0.07), transparent 60%); }
+    .card[data-color="purple"]::before { background: radial-gradient(circle at top left, rgba(139,92,246,0.07), transparent 60%); }
+    .card[data-color="emerald"]::before { background: radial-gradient(circle at top left, rgba(16,185,129,0.07), transparent 60%); }
+    .card[data-color="orange"]::before { background: radial-gradient(circle at top left, rgba(249,115,22,0.07), transparent 60%); }
+    .card[data-color="rose"]::before { background: radial-gradient(circle at top left, rgba(244,63,94,0.07), transparent 60%); }
+
+    .card-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .card h3 {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      margin-bottom: 8px;
+    }
+
+    .card p {
+      font-size: 0.82rem;
+      color: var(--muted);
+      line-height: 1.6;
+      margin-bottom: 20px;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 3px 8px;
+      border-radius: 4px;
+      background: rgba(56,189,248,0.08);
+      border: 1px solid rgba(56,189,248,0.15);
+      color: var(--accent);
+    }
+
+    .card-arrow {
+      position: absolute;
+      top: 24px;
+      right: 24px;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      font-size: 0.8rem;
+      transition: transform 0.3s, border-color 0.3s, background 0.3s;
+    }
+    .card:hover .card-arrow {
+      transform: rotate(45deg);
+      border-color: rgba(56,189,248,0.4);
+      background: rgba(56,189,248,0.1);
+    }
+
+    /* ── MODAL ── */
+    .overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(6,8,16,0.85);
+      backdrop-filter: blur(12px);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s;
+    }
+    .overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal {
+      background: var(--panel);
+      border: 1px solid rgba(56,189,248,0.2);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 860px;
+      max-height: 88vh;
+      overflow-y: auto;
+      transform: scale(0.95) translateY(20px);
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+      scrollbar-width: thin;
+      scrollbar-color: var(--glow) transparent;
+    }
+    .overlay.open .modal {
+      transform: scale(1) translateY(0);
+    }
+    .modal::-webkit-scrollbar { width: 4px; }
+    .modal::-webkit-scrollbar-thumb { background: rgba(56,189,248,0.3); border-radius: 2px; }
+
+    .modal-header {
+      padding: 32px 36px 24px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      position: sticky;
+      top: 0;
+      background: var(--panel);
+      z-index: 1;
+    }
+    .modal-title-group { flex: 1; }
+    .modal-num {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      color: var(--muted);
+      margin-bottom: 6px;
+    }
+    .modal-title {
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .modal-close {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      color: var(--text);
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      transition: background 0.2s, border-color 0.2s;
+      flex-shrink: 0;
+    }
+    .modal-close:hover { background: rgba(244,63,94,0.15); border-color: rgba(244,63,94,0.4); }
+
+    .modal-body { padding: 32px 36px; }
+
+    .modal-section { margin-bottom: 36px; }
+    .modal-section-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.65rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .modal-section-title::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .modal-section p {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      line-height: 1.8;
+      margin-bottom: 8px;
+    }
+    .modal-section ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .modal-section ul li {
+      font-size: 0.88rem;
+      color: #94a3b8;
+      line-height: 1.7;
+      padding-left: 16px;
+      position: relative;
+    }
+    .modal-section ul li::before {
+      content: '→';
+      position: absolute;
+      left: 0;
+      color: var(--accent);
+      font-size: 0.75rem;
+    }
+
+    .code-block {
+      background: #070b16;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 22px;
+      margin-bottom: 14px;
+      overflow-x: auto;
+    }
+    .code-block pre {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.78rem;
+      line-height: 1.8;
+      color: #a5f3fc;
+      margin: 0;
+      white-space: pre;
+    }
+    .code-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 0.6rem;
+      letter-spacing: 2px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .code-explanation {
+      font-size: 0.83rem;
+      color: #64748b;
+      line-height: 1.7;
+      margin-top: 8px;
+    }
+
+    .challenge-box {
+      background: rgba(139,92,246,0.06);
+      border: 1px solid rgba(139,92,246,0.2);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 12px;
+    }
+    .challenge-box h4 {
+      font-size: 0.85rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #c4b5fd;
+    }
+    .challenge-box p {
+      font-size: 0.82rem;
+      color: #64748b;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+
+
+    /* ── FOOTER ── */
+    footer {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      padding: 60px 20px;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.8rem;
+      font-family: 'Space Mono', monospace;
+      letter-spacing: 1px;
+    }
+
+    @media (max-width: 600px) {
+      .topics { padding: 60px 20px; }
+      .modal-header, .modal-body { padding: 24px 20px; }
+      .modal-title { font-size: 1.3rem; }
+      .hero-stats { gap: 24px; }
+      .stat-num { font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- HERO -->
+<header class="hero">
+  <div class="hero-orb a"></div>
+  <div class="hero-orb b"></div>
+  <div class="hero-orb c"></div>
+
+  <p class="hero-label">Proyecto Académico · 2026</p>
+  <h1>Estructuras<br>de <span>Datos</span></h1>
+  <p>Un manual interactivo que cubre los fundamentos y estructuras esenciales de la informática moderna.</p>
+  <div class="hero-stats">
+    <div class="stat">
+      <span class="stat-num">12</span>
+      <span class="stat-label">Temas</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">24</span>
+      <span class="stat-label">Ejemplos</span>
+    </div>
+    <div class="stat">
+      <span class="stat-num">24</span>
+      <span class="stat-label">Retos</span>
+    </div>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+  </div>
+</header>
+
+<!-- TOPICS -->
+<main class="topics">
+  <div class="section-header">
+    <h2 class="section-title">Contenidos</h2>
+    <div class="section-line"></div>
+    <span class="section-num">12 MÓDULOS</span>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</main>
+
+<footer>
+  Manual Web · Estructuras de Datos — Proyecto Académico
+</footer>
+
+<!-- MODAL -->
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal">
+    <div class="modal-header">
+      <div class="modal-title-group">
+        <div class="modal-num" id="modal-num"></div>
+        <h2 class="modal-title" id="modal-title"></h2>
+      </div>
+      <button class="modal-close" id="modal-close">✕</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+  // ── Cursor
+  const cur = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{
+    mx=e.clientX; my=e.clientY;
+    cur.style.left=mx+'px'; cur.style.top=my+'px';
+  });
+  (function animRing(){
+    rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12;
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(animRing);
+  })();
+  document.querySelectorAll('a,button,.card').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ cur.style.transform='translate(-50%,-50%) scale(2)'; });
+    el.addEventListener('mouseleave',()=>{ cur.style.transform='translate(-50%,-50%) scale(1)'; });
+  });
+
+  // ── DATA
+  const topics = [
+    {
+      id:'01', color:'blue', icon:'🧠', title:'Introducción',
+      tags:['Fundamentos','Teoría'],
+      desc:'Conceptos base sobre estructuras de datos, su importancia y clasificación.',
+      doc:[
+        'Una estructura de datos es una forma de organizar y almacenar datos en memoria para acceder y modificarlos eficientemente.',
+        'Son fundamentales porque determinan la eficiencia de los algoritmos que las usan.',
+        'Permiten organizar información de manera óptima según el problema a resolver.',
+        'Se clasifican en lineales (arrays, listas, pilas, colas) y no lineales (árboles, grafos).'
+      ],
+      ex1:{label:'Ejemplo 1 – Lista básica', code:`numeros = [1, 2, 3]\nprint(numeros)`, exp:'Creamos una lista con tres enteros y la mostramos en consola. Las listas son la estructura más simple y versátil.'},
+      ex2:{label:'Ejemplo 2 – Diccionario', code:`agenda = {\n  "Ana": "300111"\n}\nprint(agenda["Ana"])`, exp:'Un diccionario almacena pares clave-valor. Es ideal para búsquedas rápidas por nombre o identificador.'},
+      c1:'Crear una lista con 5 estudiantes e imprimirla.',
+      c2:'Explicar con tus propias palabras la diferencia entre estructuras lineales y no lineales.',
+    },
+    {
+      id:'02', color:'cyan', icon:'📦', title:'Arrays',
+      tags:['Índices','Memoria'],
+      desc:'Colecciones de datos almacenados en posiciones contiguas de memoria.',
+      doc:[
+        'Un array es una colección de elementos del mismo tipo, almacenados en memoria contigua.',
+        'El acceso a cualquier elemento es O(1) usando su índice, lo que los hace muy eficientes.',
+        'En Python, las listas actúan como arrays dinámicos: pueden crecer y encoger.',
+        'Los índices comienzan en 0 por convención en la mayoría de lenguajes.'
+      ],
+      ex1:{label:'Ejemplo 1 – Acceso por índice', code:`notas = [3.0, 4.5, 5.0]\nprint(notas[1])  # 4.5`, exp:'notas[1] retorna el segundo elemento (índice 1). Recordar siempre que el primer índice es 0.'},
+      ex2:{label:'Ejemplo 2 – Agregar elemento', code:`numeros = [10, 20, 30]\nnumeros.append(40)\nprint(numeros)  # [10, 20, 30, 40]`, exp:'append() añade un elemento al final. Es una operación O(1) amortizada en arrays dinámicos.'},
+      c1:'Mostrar todos los elementos de un array en orden inverso.',
+      c2:'Calcular el promedio de las notas de un arreglo.',
+    },
+    {
+      id:'03', color:'purple', icon:'🔗', title:'Listas Simples',
+      tags:['Nodos','Punteros'],
+      desc:'Estructura dinámica donde cada nodo apunta al siguiente.',
+      doc:[
+        'Una lista enlazada simple consiste en nodos donde cada uno guarda un dato y un puntero al siguiente nodo.',
+        'La inserción al inicio o en medio es O(1) si ya tienes el nodo previo, a diferencia de los arrays.',
+        'No requiere memoria contigua: los nodos pueden estar dispersos en la memoria.',
+        'El recorrido es siempre secuencial O(n), no hay acceso aleatorio por índice.'
+      ],
+      ex1:{label:'Ejemplo 1 – Clase Nodo', code:`class Nodo:\n    def __init__(self, dato):\n        self.dato = dato\n        self.siguiente = None`, exp:'Definimos la clase base. Cada nodo tiene un dato y una referencia al próximo nodo (None si es el último).'},
+      ex2:{label:'Ejemplo 2 – Enlazar nodos', code:`n1 = Nodo(10)\nn2 = Nodo(20)\nn1.siguiente = n2\nprint(n1.siguiente.dato)  # 20`, exp:'Enlazamos n1 → n2. Para recorrer la lista avanzamos por los punteros siguiente.'},
+      c1:'Crear una lista enlazada con 4 nodos e insertar uno al inicio.',
+      c2:'Recorrer una lista e imprimir todos los valores.',
+    },
+    {
+      id:'04', color:'emerald', icon:'🔄', title:'Listas Dobles y Circulares',
+      tags:['Doble enlace','Circular'],
+      desc:'Listas con punteros bidireccionales o con el último nodo apuntando al primero.',
+      doc:[
+        'En una lista doblemente enlazada cada nodo tiene punteros al nodo anterior y al siguiente.',
+        'Permite recorrer la lista en ambas direcciones, útil para navegadores e historial de acciones.',
+        'Una lista circular conecta el último nodo de vuelta al primero, formando un ciclo.',
+        'Las listas circulares son ideales para turnos rotatorios, playlists o planificación de procesos.'
+      ],
+      ex1:{label:'Ejemplo 1 – Nodo doble', code:`class NodoDoble:\n    def __init__(self, dato):\n        self.dato = dato\n        self.anterior = None\n        self.siguiente = None`, exp:'Ahora cada nodo conoce a su predecesor y sucesor, permitiendo navegación bidireccional.'},
+      ex2:{label:'Ejemplo 2 – Lista circular', code:`n1 = Nodo(1)\nn2 = Nodo(2)\nn3 = Nodo(3)\nn1.siguiente = n2\nn2.siguiente = n3\nn3.siguiente = n1  # circular!`, exp:'El último nodo apunta al primero, creando el ciclo. Al recorrer, debemos detectar cuándo volvemos al inicio.'},
+      c1:'Implementar una lista doblemente enlazada con operaciones de insertar y eliminar.',
+      c2:'Simular una playlist circular que recorre canciones infinitamente.',
+    },
+    {
+      id:'05', color:'orange', icon:'📚', title:'Pilas (Stack)',
+      tags:['LIFO','push / pop'],
+      desc:'Estructura LIFO: el último elemento en entrar es el primero en salir.',
+      doc:[
+        'Una pila (stack) sigue el principio LIFO: Last In, First Out.',
+        'push() agrega un elemento al tope; pop() lo elimina y retorna.',
+        'Son esenciales para: llamadas recursivas, evaluación de expresiones, historial de deshacer.',
+        'En Python se implementan fácilmente con listas usando append() y pop().'
+      ],
+      ex1:{label:'Ejemplo 1 – Push', code:`pila = []\npila.append(10)\npila.append(20)\npila.append(30)\nprint(pila)  # [10, 20, 30]`, exp:'Cada append() empuja un elemento al tope de la pila. El último en entrar (30) está en la cima.'},
+      ex2:{label:'Ejemplo 2 – Pop', code:`tope = pila.pop()\nprint(tope)   # 30\nprint(pila)   # [10, 20]`, exp:'pop() sin argumento elimina y retorna el último elemento. La pila queda sin el 30.'},
+      c1:'Validar si una cadena de paréntesis está correctamente balanceada usando una pila.',
+      c2:'Implementar un sistema de Ctrl+Z (deshacer) usando una pila.',
+    },
+    {
+      id:'06', color:'rose', icon:'🚶', title:'Colas (Queue)',
+      tags:['FIFO','deque'],
+      desc:'Estructura FIFO: el primer elemento en entrar es el primero en salir.',
+      doc:[
+        'Una cola (queue) sigue el principio FIFO: First In, First Out.',
+        'Se usa deque de collections en Python para eficiencia; append() encola y popleft() desencola.',
+        'Aplicaciones: atención al cliente, cola de impresión, procesamiento de tareas, BFS en grafos.',
+        'A diferencia de las pilas, la extracción se hace por el frente, no por el fondo.'
+      ],
+      ex1:{label:'Ejemplo 1 – Encolar', code:`from collections import deque\ncola = deque()\ncola.append("Cliente 1")\ncola.append("Cliente 2")\ncola.append("Cliente 3")`, exp:'Usamos deque para mayor eficiencia. append() añade al final de la cola.'},
+      ex2:{label:'Ejemplo 2 – Desencolar', code:`atendido = cola.popleft()\nprint(atendido)  # Cliente 1\nprint(cola)      # deque(['Cliente 2', 'Cliente 3'])`, exp:'popleft() extrae el primer elemento (quien llegó primero). Simula la atención en orden de llegada.'},
+      c1:'Simular la atención de un banco con 5 clientes usando una cola.',
+      c2:'Implementar una cola de impresión de documentos.',
+    },
+    {
+      id:'07', color:'blue', icon:'#️⃣', title:'Tablas Hash',
+      tags:['Clave-Valor','Hashing'],
+      desc:'Estructura que mapea claves a valores mediante una función hash para acceso O(1).',
+      doc:[
+        'Una tabla hash (o diccionario) mapea claves únicas a valores usando una función hash.',
+        'El acceso, inserción y eliminación son O(1) en promedio, haciéndolas muy eficientes.',
+        'Las colisiones ocurren cuando dos claves producen el mismo hash; se resuelven con encadenamiento o sondeo.',
+        'En Python, los diccionarios son tablas hash implementadas de forma nativa.'
+      ],
+      ex1:{label:'Ejemplo 1 – Crear diccionario', code:`usuario = {\n    "nombre": "Juan",\n    "edad": 20,\n    "email": "juan@email.com"\n}`, exp:'Cada par clave:valor es una entrada en la tabla hash. Las claves deben ser únicas e inmutables.'},
+      ex2:{label:'Ejemplo 2 – Acceder y modificar', code:`print(usuario["nombre"])  # Juan\nusuario["edad"] = 21\nusuario["carrera"] = "Sistemas"\nprint(usuario)`, exp:'El acceso por clave es O(1). Podemos actualizar valores existentes o agregar nuevas entradas fácilmente.'},
+      c1:'Crear una agenda telefónica que permita buscar, agregar y eliminar contactos.',
+      c2:'Implementar un inventario de productos con claves únicas.',
+    },
+    {
+      id:'08', color:'cyan', icon:'🌳', title:'Árboles Binarios',
+      tags:['Raíz','Hijos'],
+      desc:'Estructura jerárquica donde cada nodo tiene a lo sumo dos hijos.',
+      doc:[
+        'Un árbol binario es una estructura donde cada nodo tiene como máximo dos hijos: izquierdo y derecho.',
+        'El nodo inicial se llama raíz; los nodos sin hijos son hojas.',
+        'Los recorridos clásicos son: preorden (raíz, izq, der), inorden (izq, raíz, der) y postorden (izq, der, raíz).',
+        'Son la base de estructuras más complejas como BST, AVL, heaps y tries.'
+      ],
+      ex1:{label:'Ejemplo 1 – Clase Nodo árbol', code:`class Nodo:\n    def __init__(self, valor):\n        self.valor = valor\n        self.izq = None\n        self.der = None`, exp:'La clase base del árbol. Cada nodo guarda un valor y referencias a sus dos posibles hijos.'},
+      ex2:{label:'Ejemplo 2 – Construir árbol', code:`raiz = Nodo(1)\nraiz.izq = Nodo(2)\nraiz.der = Nodo(3)\nraiz.izq.izq = Nodo(4)`, exp:'Construimos un árbol manualmente. La raíz es 1, tiene hijos 2 y 3; el nodo 2 tiene hijo izquierdo 4.'},
+      c1:'Crear un árbol binario de 7 nodos e implementar el recorrido preorden.',
+      c2:'Contar el número de hojas de un árbol binario de forma recursiva.',
+    },
+    {
+      id:'09', color:'purple', icon:'🔍', title:'BST – Árbol de Búsqueda',
+      tags:['Búsqueda','O(log n)'],
+      desc:'Árbol binario donde los valores menores van a la izquierda y mayores a la derecha.',
+      doc:[
+        'En un BST (Binary Search Tree), para cada nodo: todos los valores de su subárbol izquierdo son menores y los del derecho son mayores.',
+        'Esto permite búsquedas eficientes en O(log n) para árboles balanceados.',
+        'La inserción mantiene la propiedad BST: comparamos con cada nodo para decidir la dirección.',
+        'El recorrido inorden de un BST produce los valores en orden ascendente.'
+      ],
+      ex1:{label:'Ejemplo 1 – Insertar en BST', code:`def insertar(raiz, valor):\n    if raiz is None:\n        return Nodo(valor)\n    if valor < raiz.valor:\n        raiz.izq = insertar(raiz.izq, valor)\n    else:\n        raiz.der = insertar(raiz.der, valor)\n    return raiz`, exp:'La función compara el valor con el nodo actual y recursa hacia el subárbol correspondiente hasta encontrar una posición vacía.'},
+      ex2:{label:'Ejemplo 2 – Buscar en BST', code:`def buscar(raiz, objetivo):\n    if raiz is None or raiz.valor == objetivo:\n        return raiz\n    if objetivo < raiz.valor:\n        return buscar(raiz.izq, objetivo)\n    return buscar(raiz.der, objetivo)`, exp:'En cada nivel descartamos la mitad del árbol. En un árbol balanceado esto es O(log n).'},
+      c1:'Construir un BST insertando los valores [5, 3, 7, 1, 4, 6, 8] y mostrar el inorden.',
+      c2:'Implementar la búsqueda del mínimo y máximo en un BST.',
+    },
+    {
+      id:'10', color:'emerald', icon:'⚖️', title:'Árboles AVL',
+      tags:['Balanceo','Rotaciones'],
+      desc:'BST autobalanceado que garantiza O(log n) mediante rotaciones.',
+      doc:[
+        'Un árbol AVL es un BST que se autobalancea: la diferencia de alturas entre subárboles de cualquier nodo es máximo 1.',
+        'Cuando se viola este balance factor, se aplican rotaciones (simples o dobles) para corregirlo.',
+        'Existen 4 tipos de rotaciones: derecha, izquierda, izquierda-derecha y derecha-izquierda.',
+        'Garantizan O(log n) para búsqueda, inserción y eliminación en el peor caso, a diferencia del BST simple.'
+      ],
+      ex1:{label:'Ejemplo 1 – Rotación derecha', code:`def rotacion_derecha(y):\n    x = y.izq\n    T2 = x.der\n    x.der = y\n    y.izq = T2\n    y.altura = 1 + max(altura(y.izq), altura(y.der))\n    x.altura = 1 + max(altura(x.izq), altura(x.der))\n    return x`, exp:'La rotación derecha se aplica cuando el subárbol izquierdo está más pesado. Reorganiza los nodos manteniendo la propiedad BST.'},
+      ex2:{label:'Ejemplo 2 – Factor de balance', code:`def balance(nodo):\n    if nodo is None:\n        return 0\n    return altura(nodo.izq) - altura(nodo.der)\n\n# Si balance > 1: rotación derecha\n# Si balance < -1: rotación izquierda`, exp:'El factor de balance determina qué tipo de rotación se necesita. Un valor fuera de [-1, 1] indica desequilibrio.'},
+      c1:'Insertar los valores [10, 20, 30] en un AVL y mostrar las rotaciones realizadas.',
+      c2:'Implementar una función que calcule la altura de un árbol AVL.',
+    },
+    {
+      id:'11', color:'orange', icon:'🗺️', title:'Grafos',
+      tags:['Vértices','Aristas','BFS/DFS'],
+      desc:'Estructuras que modelan relaciones entre objetos mediante vértices y aristas.',
+      doc:[
+        'Un grafo G = (V, E) consiste en un conjunto de vértices V y aristas E que los conectan.',
+        'Pueden ser dirigidos (las aristas tienen dirección) o no dirigidos.',
+        'Se representan con listas de adyacencia (eficiente en memoria) o matrices de adyacencia (acceso rápido).',
+        'Los algoritmos clásicos incluyen BFS (búsqueda en anchura) y DFS (búsqueda en profundidad).'
+      ],
+      ex1:{label:'Ejemplo 1 – Lista de adyacencia', code:`grafo = {\n    'A': ['B', 'C'],\n    'B': ['A', 'D'],\n    'C': ['A'],\n    'D': ['B']\n}`, exp:'Representamos el grafo como diccionario: cada clave es un nodo y su valor es la lista de vecinos.'},
+      ex2:{label:'Ejemplo 2 – BFS básico', code:`from collections import deque\n\ndef bfs(grafo, inicio):\n    visitados = set()\n    cola = deque([inicio])\n    while cola:\n        nodo = cola.popleft()\n        if nodo not in visitados:\n            print(nodo)\n            visitados.add(nodo)\n            cola.extend(grafo[nodo])`, exp:'BFS explora nivel por nivel usando una cola. Garantiza encontrar el camino más corto en grafos no ponderados.'},
+      c1:'Crear un mapa de ciudades colombianas y encontrar el camino entre dos de ellas con BFS.',
+      c2:'Modelar una red social simple y contar los amigos en común entre dos usuarios.',
+    },
+    {
+      id:'12', color:'rose', icon:'⏱️', title:'Complejidad Algorítmica',
+      tags:['Big O','Tiempo','Espacio'],
+      desc:'Análisis del crecimiento del tiempo y espacio de los algoritmos según el tamaño de entrada.',
+      doc:[
+        'La notación Big O describe el límite superior del crecimiento de un algoritmo en el peor caso.',
+        'Las complejidades más comunes son: O(1) constante, O(log n) logarítmica, O(n) lineal, O(n log n), O(n²) cuadrática.',
+        'La complejidad temporal mide el número de operaciones; la espacial mide la memoria usada.',
+        'Al diseñar algoritmos siempre buscamos reducir la complejidad al mínimo posible según el problema.'
+      ],
+      ex1:{label:'Ejemplo 1 – O(n) lineal', code:`def buscar(lista, objetivo):\n    for elemento in lista:  # O(n)\n        if elemento == objetivo:\n            return True\n    return False`, exp:'Recorremos cada elemento una sola vez. Si la lista tiene n elementos, en el peor caso hacemos n comparaciones.'},
+      ex2:{label:'Ejemplo 2 – O(log n) búsqueda binaria', code:`def binaria(lista, objetivo):\n    ini, fin = 0, len(lista) - 1\n    while ini <= fin:       # O(log n)\n        mid = (ini + fin) // 2\n        if lista[mid] == objetivo: return mid\n        elif lista[mid] < objetivo: ini = mid + 1\n        else: fin = mid - 1\n    return -1`, exp:'Cada iteración descarta la mitad del espacio de búsqueda. Para 1 millón de elementos, son solo ~20 comparaciones.'},
+      c1:'Comparar el tiempo real de ejecución de O(n) vs O(n²) para n = 1000, 5000, 10000.',
+      c2:'Analizar la complejidad de una función que tiene un ciclo dentro de otro ciclo.',
+    },
+  ];
+
+  // ── Render cards
+  const grid = document.getElementById('grid');
+  topics.forEach((t,i) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.setAttribute('data-color', t.color);
+    card.setAttribute('data-idx', i);
+    card.style.animationDelay = (i*0.06)+'s';
+    card.innerHTML = `
+      <div class="card-num">MÓDULO ${t.id}</div>
+      <span class="card-icon">${t.icon}</span>
+      <h3>${t.title}</h3>
+      <p>${t.desc}</p>
+      <div class="card-tags">${t.tags.map(tag=>`<span class="tag">${tag}</span>`).join('')}</div>
+      <div class="card-arrow">↗</div>
+    `;
+    card.addEventListener('click', ()=>openModal(i));
+    grid.appendChild(card);
+  });
+
+  // ── Intersection observer for card animation
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+  },{threshold:0.1});
+  document.querySelectorAll('.card').forEach(c=>obs.observe(c));
+
+  // ── Modal
+  const overlay = document.getElementById('overlay');
+  const modalNum = document.getElementById('modal-num');
+  const modalTitle = document.getElementById('modal-title');
+  const modalBody = document.getElementById('modal-body');
+  const modalClose = document.getElementById('modal-close');
+
+  function openModal(idx){
+    const t = topics[idx];
+    modalNum.textContent = `MÓDULO ${t.id} · ${t.tags.join(' · ')}`;
+    modalTitle.textContent = `${t.icon} ${t.title}`;
+    modalBody.innerHTML = `
+      <div class="modal-section">
+        <div class="modal-section-title">Documentación</div>
+        <ul>${t.doc.map(d=>`<li>${d}</li>`).join('')}</ul>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Ejemplos de Código</div>
+        <div class="code-block">
+          <div class="code-label">${t.ex1.label}</div>
+          <pre>${escHtml(t.ex1.code)}</pre>
+        </div>
+        <p class="code-explanation">${t.ex1.exp}</p>
+        <br>
+        <div class="code-block">
+          <div class="code-label">${t.ex2.label}</div>
+          <pre>${escHtml(t.ex2.code)}</pre>
+        </div>
+        <p class="code-explanation">${t.ex2.exp}</p>
+      </div>
+
+      <div class="modal-section">
+        <div class="modal-section-title">Retos de Práctica</div>
+        <div class="challenge-box">
+          <h4>🎯 Reto 1</h4>
+          <p>${t.c1}</p>
+        </div>
+        <div class="challenge-box">
+          <h4>🎯 Reto 2</h4>
+          <p>${t.c2}</p>
+        </div>
+      </div>
+
+
+    `;
+    overlay.classList.add('open');
+    document.body.style.overflow='hidden';
+    document.getElementById('modal').scrollTop=0;
+  }
+
+  function closeModal(){
+    overlay.classList.remove('open');
+    document.body.style.overflow='';
+  }
+
+  modalClose.addEventListener('click', closeModal);
+  overlay.addEventListener('click', e=>{ if(e.target===overlay) closeModal(); });
+  document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+  function escHtml(s){
+    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  }
+</script>
+</body>
+</html>
