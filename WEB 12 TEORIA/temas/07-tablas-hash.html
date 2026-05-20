@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 07 · Tablas Hash — Manual ED</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="../index.html">ED · Manual</a>
+  <a class="nav-back" href="../index.html">Todos los módulos</a>
+</nav>
+
+<!-- HERO TEMA -->
+<section class="hero-tema">
+  <div class="orb orb-a"></div>
+  <div class="orb orb-b"></div>
+  <div class="orb orb-c"></div>
+  <span class="hero-label">Módulo 07</span>
+  <h1>#️⃣ <span>Tablas Hash</span></h1>
+  <p class="desc">Estructura que mapea claves a valores mediante una función hash para acceso O(1).</p>
+  <div class="hero-tags">
+    <span class="htag">Clave-Valor</span><span class="htag">Hashing</span><span class="htag">O(1)</span>
+  </div>
+</section>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" data-tab="doc">📄 Documentación</button>
+  <button class="tab-btn" data-tab="ejemplos">💻 Ejemplos</button>
+  <button class="tab-btn" data-tab="retos">🎯 Retos</button>
+  <button class="tab-btn" data-tab="video">🎬 Clip explicativo</button>
+</div>
+
+<!-- ══ DOCUMENTACIÓN ══ -->
+<div id="tab-doc" class="tab-content active">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Documentación</h2>
+      <div class="line"></div>
+      <span class="num">MÓDULO 07</span>
+    </div>
+    <div class="doc-grid">
+      <div class="doc-card full-width">
+        <h3>Definición y características</h3>
+        <ul>
+          <li>Una tabla hash (o diccionario) mapea claves únicas a valores usando una función hash.</li><li>El acceso, inserción y eliminación son O(1) en promedio, haciéndolas muy eficientes.</li><li>Las colisiones ocurren cuando dos claves producen el mismo hash; se resuelven con encadenamiento o sondeo.</li><li>En Python, los diccionarios son tablas hash implementadas de forma nativa.</li>
+        </ul>
+      </div>
+      <div class="doc-card">
+        <h3>Casos de uso</h3>
+        <p>Revisa los ejemplos de código en la pestaña <strong style="color:var(--accent)">Ejemplos</strong> para ver aplicaciones prácticas de esta estructura.</p>
+      </div>
+      <div class="doc-card">
+        <h3>Etiquetas del tema</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+          <span class="htag">Clave-Valor</span><span class="htag">Hashing</span><span class="htag">O(1)</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ EJEMPLOS ══ -->
+<div id="tab-ejemplos" class="tab-content">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Ejemplos</h2>
+      <div class="line"></div>
+      <span class="num">2 EJEMPLOS</span>
+    </div>
+    <div class="examples-list">
+
+      <div class="example-block">
+        <div class="example-header">
+          <span class="example-num">Ejemplo 01</span>
+          <h3>Crear diccionario</h3>
+        </div>
+        <div class="code-area"><pre>usuario = {
+    "nombre": "Juan",
+    "edad": 20,
+    "email": "juan@email.com"
+}</pre></div>
+        <div class="example-exp">Cada par clave:valor es una entrada en la tabla hash. Las claves deben ser únicas e inmutables.</div>
+      </div>
+
+      <div class="example-block">
+        <div class="example-header">
+          <span class="example-num">Ejemplo 02</span>
+          <h3>Acceder y modificar</h3>
+        </div>
+        <div class="code-area"><pre>print(usuario["nombre"])  # Juan
+usuario["edad"] = 21
+usuario["carrera"] = "Sistemas"
+print(usuario)</pre></div>
+        <div class="example-exp">El acceso por clave es O(1). Podemos actualizar valores existentes o agregar nuevas entradas fácilmente.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ RETOS ══ -->
+<div id="tab-retos" class="tab-content">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Retos de Práctica</h2>
+      <div class="line"></div>
+      <span class="num">2 RETOS</span>
+    </div>
+    <div class="retos-list">
+
+      <div class="reto-card">
+        <span class="reto-num">🎯 Reto 01</span>
+        <h3>Agenda telefónica</h3>
+        <p>Crear una agenda telefónica que permita buscar, agregar y eliminar contactos.</p>
+        <div class="pista">
+          <span>💡 Pista</span>
+          <p>Usa un diccionario donde la clave es el nombre y el valor es el número; implementa funciones para cada operación.</p>
+        </div>
+      </div>
+
+      <div class="reto-card">
+        <span class="reto-num">🎯 Reto 02</span>
+        <h3>Inventario de productos</h3>
+        <p>Implementar un inventario de productos con claves únicas.</p>
+        <div class="pista">
+          <span>💡 Pista</span>
+          <p>Cada producto tiene id, nombre y precio; permite actualizar stock y buscar por id.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ VIDEO ══ -->
+<div id="tab-video" class="tab-content">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Clip Explicativo</h2>
+      <div class="line"></div>
+      <span class="num">VIDEO</span>
+    </div>
+    <div class="video-wrap">
+      
+        <div class="video-placeholder">
+          <div class="video-icon">▶</div>
+          <p>Video pendiente de subir</p>
+        </div>
+      <div class="video-info">
+        <h3>Tablas Hash</h3>
+        <p>Clip que explica el concepto de función hash, colisiones y cómo Python implementa los diccionarios.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  Manual Web · Estructuras de Datos — Módulo 07 · <a href="../index.html">← Volver al índice</a>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

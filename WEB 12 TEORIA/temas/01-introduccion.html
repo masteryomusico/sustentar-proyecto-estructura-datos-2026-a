@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 01 · Introducción — Manual ED</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="../index.html">ED · Manual</a>
+  <a class="nav-back" href="../index.html">Todos los módulos</a>
+</nav>
+
+<!-- HERO TEMA -->
+<section class="hero-tema">
+  <div class="orb orb-a"></div>
+  <div class="orb orb-b"></div>
+  <div class="orb orb-c"></div>
+  <span class="hero-label">Módulo 01</span>
+  <h1>🧠 <span>Introducción</span></h1>
+  <p class="desc">Conceptos base sobre estructuras de datos, su importancia y clasificación.</p>
+  <div class="hero-tags">
+    <span class="htag">Fundamentos</span><span class="htag">Teoría</span><span class="htag">Clasificación</span>
+  </div>
+</section>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" data-tab="doc">📄 Documentación</button>
+  <button class="tab-btn" data-tab="ejemplos">💻 Ejemplos</button>
+  <button class="tab-btn" data-tab="retos">🎯 Retos</button>
+  <button class="tab-btn" data-tab="video">🎬 Clip explicativo</button>
+</div>
+
+<!-- ══ DOCUMENTACIÓN ══ -->
+<div id="tab-doc" class="tab-content active">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Documentación</h2>
+      <div class="line"></div>
+      <span class="num">MÓDULO 01</span>
+    </div>
+    <div class="doc-grid">
+      <div class="doc-card full-width">
+        <h3>Definición y características</h3>
+        <ul>
+          <li>Una estructura de datos es una forma de organizar y almacenar datos en memoria para acceder y modificarlos eficientemente.</li><li>Son fundamentales porque determinan la eficiencia de los algoritmos que las usan.</li><li>Permiten organizar información de manera óptima según el problema a resolver.</li><li>Se clasifican en lineales (arrays, listas, pilas, colas) y no lineales (árboles, grafos).</li>
+        </ul>
+      </div>
+      <div class="doc-card">
+        <h3>Casos de uso</h3>
+        <p>Revisa los ejemplos de código en la pestaña <strong style="color:var(--accent)">Ejemplos</strong> para ver aplicaciones prácticas de esta estructura.</p>
+      </div>
+      <div class="doc-card">
+        <h3>Etiquetas del tema</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+          <span class="htag">Fundamentos</span><span class="htag">Teoría</span><span class="htag">Clasificación</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ EJEMPLOS ══ -->
+<div id="tab-ejemplos" class="tab-content">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Ejemplos</h2>
+      <div class="line"></div>
+      <span class="num">2 EJEMPLOS</span>
+    </div>
+    <div class="examples-list">
+
+      <div class="example-block">
+        <div class="example-header">
+          <span class="example-num">Ejemplo 01</span>
+          <h3>Lista básica en Python</h3>
+        </div>
+        <div class="code-area"><pre>numeros = [1, 2, 3]
+print(numeros)</pre></div>
+        <div class="example-exp">Creamos una lista con tres enteros y la mostramos en consola. Las listas son la estructura más simple y versátil.</div>
+      </div>
+
+      <div class="example-block">
+        <div class="example-header">
+          <span class="example-num">Ejemplo 02</span>
+          <h3>Diccionario clave-valor</h3>
+        </div>
+        <div class="code-area"><pre>agenda = {
+  "Ana": "300111"
+}
+print(agenda["Ana"])</pre></div>
+        <div class="example-exp">Un diccionario almacena pares clave-valor. Es ideal para búsquedas rápidas por nombre o identificador.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ RETOS ══ -->
+<div id="tab-retos" class="tab-content">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Retos de Práctica</h2>
+      <div class="line"></div>
+      <span class="num">2 RETOS</span>
+    </div>
+    <div class="retos-list">
+
+      <div class="reto-card">
+        <span class="reto-num">🎯 Reto 01</span>
+        <h3>Lista de estudiantes</h3>
+        <p>Crear una lista con 5 estudiantes e imprimirla.</p>
+        <div class="pista">
+          <span>💡 Pista</span>
+          <p>Usa corchetes [] para crear la lista y append() para agregar elementos.</p>
+        </div>
+      </div>
+
+      <div class="reto-card">
+        <span class="reto-num">🎯 Reto 02</span>
+        <h3>Lineales vs No lineales</h3>
+        <p>Explicar con tus propias palabras la diferencia entre estructuras lineales y no lineales.</p>
+        <div class="pista">
+          <span>💡 Pista</span>
+          <p>Piensa en cómo los datos están conectados: ¿solo hacia adelante (lineal) o en múltiples direcciones (no lineal)?</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ VIDEO ══ -->
+<div id="tab-video" class="tab-content">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Clip Explicativo</h2>
+      <div class="line"></div>
+      <span class="num">VIDEO</span>
+    </div>
+    <div class="video-wrap">
+      
+        <div class="video-placeholder">
+          <div class="video-icon">▶</div>
+          <p>Video pendiente de subir</p>
+        </div>
+      <div class="video-info">
+        <h3>Introducción a las Estructuras de Datos</h3>
+        <p>Un clip corto que explica qué son las estructuras de datos, para qué sirven y cómo se clasifican.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  Manual Web · Estructuras de Datos — Módulo 01 · <a href="../index.html">← Volver al índice</a>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

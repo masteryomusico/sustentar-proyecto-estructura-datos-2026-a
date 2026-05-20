@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 09 · BST – Árbol de Búsqueda — Manual ED</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="../index.html">ED · Manual</a>
+  <a class="nav-back" href="../index.html">Todos los módulos</a>
+</nav>
+
+<!-- HERO TEMA -->
+<section class="hero-tema">
+  <div class="orb orb-a"></div>
+  <div class="orb orb-b"></div>
+  <div class="orb orb-c"></div>
+  <span class="hero-label">Módulo 09</span>
+  <h1>🔍 <span>BST – Árbol de Búsqueda</span></h1>
+  <p class="desc">Árbol binario donde los valores menores van a la izquierda y mayores a la derecha.</p>
+  <div class="hero-tags">
+    <span class="htag">Búsqueda</span><span class="htag">O(log n)</span><span class="htag">Inorden</span>
+  </div>
+</section>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" data-tab="doc">📄 Documentación</button>
+  <button class="tab-btn" data-tab="ejemplos">💻 Ejemplos</button>
+  <button class="tab-btn" data-tab="retos">🎯 Retos</button>
+  <button class="tab-btn" data-tab="video">🎬 Clip explicativo</button>
+</div>
+
+<!-- ══ DOCUMENTACIÓN ══ -->
+<div id="tab-doc" class="tab-content active">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Documentación</h2>
+      <div class="line"></div>
+      <span class="num">MÓDULO 09</span>
+    </div>
+    <div class="doc-grid">
+      <div class="doc-card full-width">
+        <h3>Definición y características</h3>
+        <ul>
+          <li>En un BST (Binary Search Tree), para cada nodo: todos los valores de su subárbol izquierdo son menores y los del derecho son mayores.</li><li>Esto permite búsquedas eficientes en O(log n) para árboles balanceados.</li><li>La inserción mantiene la propiedad BST: comparamos con cada nodo para decidir la dirección.</li><li>El recorrido inorden de un BST produce los valores en orden ascendente.</li>
+        </ul>
+      </div>
+      <div class="doc-card">
+        <h3>Casos de uso</h3>
+        <p>Revisa los ejemplos de código en la pestaña <strong style="color:var(--accent)">Ejemplos</strong> para ver aplicaciones prácticas de esta estructura.</p>
+      </div>
+      <div class="doc-card">
+        <h3>Etiquetas del tema</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+          <span class="htag">Búsqueda</span><span class="htag">O(log n)</span><span class="htag">Inorden</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ EJEMPLOS ══ -->
+<div id="tab-ejemplos" class="tab-content">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Ejemplos</h2>
+      <div class="line"></div>
+      <span class="num">2 EJEMPLOS</span>
+    </div>
+    <div class="examples-list">
+
+      <div class="example-block">
+        <div class="example-header">
+          <span class="example-num">Ejemplo 01</span>
+          <h3>Insertar en BST</h3>
+        </div>
+        <div class="code-area"><pre>def insertar(raiz, valor):
+    if raiz is None:
+        return Nodo(valor)
+    if valor &lt; raiz.valor:
+        raiz.izq = insertar(raiz.izq, valor)
+    else:
+        raiz.der = insertar(raiz.der, valor)
+    return raiz</pre></div>
+        <div class="example-exp">La función compara el valor con el nodo actual y recursa hacia el subárbol correspondiente hasta encontrar una posición vacía.</div>
+      </div>
+
+      <div class="example-block">
+        <div class="example-header">
+          <span class="example-num">Ejemplo 02</span>
+          <h3>Buscar en BST</h3>
+        </div>
+        <div class="code-area"><pre>def buscar(raiz, objetivo):
+    if raiz is None or raiz.valor == objetivo:
+        return raiz
+    if objetivo &lt; raiz.valor:
+        return buscar(raiz.izq, objetivo)
+    return buscar(raiz.der, objetivo)</pre></div>
+        <div class="example-exp">En cada nivel descartamos la mitad del árbol. En un árbol balanceado esto es O(log n).</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ RETOS ══ -->
+<div id="tab-retos" class="tab-content">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Retos de Práctica</h2>
+      <div class="line"></div>
+      <span class="num">2 RETOS</span>
+    </div>
+    <div class="retos-list">
+
+      <div class="reto-card">
+        <span class="reto-num">🎯 Reto 01</span>
+        <h3>BST inorden</h3>
+        <p>Construir un BST insertando los valores [5, 3, 7, 1, 4, 6, 8] y mostrar el inorden.</p>
+        <div class="pista">
+          <span>💡 Pista</span>
+          <p>El inorden de un BST siempre produce los valores en orden ascendente.</p>
+        </div>
+      </div>
+
+      <div class="reto-card">
+        <span class="reto-num">🎯 Reto 02</span>
+        <h3>Mínimo y máximo</h3>
+        <p>Implementar la búsqueda del mínimo y máximo en un BST.</p>
+        <div class="pista">
+          <span>💡 Pista</span>
+          <p>El mínimo siempre está en el nodo más a la izquierda; el máximo en el más a la derecha.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ VIDEO ══ -->
+<div id="tab-video" class="tab-content">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Clip Explicativo</h2>
+      <div class="line"></div>
+      <span class="num">VIDEO</span>
+    </div>
+    <div class="video-wrap">
+      
+        <div class="video-placeholder">
+          <div class="video-icon">▶</div>
+          <p>Video pendiente de subir</p>
+        </div>
+      <div class="video-info">
+        <h3>Árboles Binarios de Búsqueda</h3>
+        <p>Clip que explica la propiedad BST y compara su rendimiento con búsqueda lineal.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  Manual Web · Estructuras de Datos — Módulo 09 · <a href="../index.html">← Volver al índice</a>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>
