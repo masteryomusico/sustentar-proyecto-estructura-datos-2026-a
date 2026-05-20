@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cómo crear tu hoja de vida</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Fraunces:ital,wght@0,300;0,600;1,300&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg:#fafaf8;
+  --ink:#111210;
+  --muted:#6b6b68;
+  --border:#e2e2de;
+  --accent:#1a5c3a;
+  --accent-light:#e8f2ec;
+  --accent-mid:#2e7d52;
+  --warn:#854f0b;
+  --warn-light:#faeeda;
+  --danger:#a32d2d;
+  --danger-light:#fcebeb;
+  --card:#ffffff;
+}
+
+body{
+  font-family:'Syne',sans-serif;
+  background:var(--bg);
+  color:var(--ink);
+  font-size:15px;
+  line-height:1.6;
+}
+
+/* NAV */
+header{
+  background:var(--ink);
+  padding:0 3rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  height:60px;
+  position:sticky;
+  top:0;
+  z-index:200;
+}
+
+.logo{
+  font-family:'Fraunces',serif;
+  font-size:22px;
+  font-weight:600;
+  color:#fff;
+  letter-spacing:-0.02em;
+}
+
+.logo span{color:#4ade96}
+
+nav{display:flex;gap:6px}
+nav a{
+  color:rgba(255,255,255,0.55);
+  text-decoration:none;
+  font-size:12px;
+  font-family:'IBM Plex Mono',monospace;
+  letter-spacing:0.05em;
+  padding:6px 14px;
+  border-radius:100px;
+  transition:all .2s;
+}
+nav a:hover,nav a.on{background:rgba(255,255,255,0.1);color:#fff}
+
+/* HERO */
+.hero{
+  padding:6rem 3rem 5rem;
+  max-width:1100px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr 420px;
+  gap:4rem;
+  align-items:center;
+}
+
+.hero-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.15em;
+  color:var(--accent-mid);
+  text-transform:uppercase;
+  margin-bottom:1.2rem;
+  display:flex;
+  align-items:center;
+  gap:8px;
+}
+.hero-label::before{content:'';display:block;width:24px;height:1px;background:var(--accent-mid)}
+
+.hero h1{
+  font-family:'Fraunces',serif;
+  font-size:58px;
+  font-weight:600;
+  line-height:1.0;
+  letter-spacing:-0.03em;
+  margin-bottom:1.5rem;
+}
+
+.hero h1 em{
+  font-style:italic;
+  font-weight:300;
+  color:var(--muted);
+}
+
+.hero p{
+  font-size:16px;
+  color:var(--muted);
+  max-width:400px;
+  line-height:1.7;
+  margin-bottom:2rem;
+}
+
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+
+.btn-primary{
+  background:var(--accent);
+  color:#fff;
+  border:none;
+  border-radius:8px;
+  padding:12px 24px;
+  font-family:'Syne',sans-serif;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-block;
+  transition:background .2s;
+}
+.btn-primary:hover{background:var(--accent-mid)}
+
+.btn-outline{
+  background:transparent;
+  color:var(--ink);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:12px 24px;
+  font-family:'Syne',sans-serif;
+  font-size:14px;
+  font-weight:700;
+  cursor:pointer;
+  text-decoration:none;
+  display:inline-block;
+  transition:all .2s;
+}
+.btn-outline:hover{border-color:var(--ink)}
+
+/* CV PREVIEW CARD */
+.cv-preview{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+  box-shadow:0 1px 3px rgba(0,0,0,0.06);
+}
+
+.cv-preview-header{
+  background:var(--accent);
+  padding:1.5rem;
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.cv-avatar{
+  width:52px;height:52px;
+  background:rgba(255,255,255,0.2);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces',serif;
+  font-size:20px;
+  font-weight:600;
+  color:#fff;
+}
+
+.cv-name{color:#fff}
+.cv-name h3{font-size:16px;font-weight:700;margin-bottom:2px}
+.cv-name p{font-size:11px;opacity:0.7;font-family:'IBM Plex Mono',monospace}
+
+.cv-body{padding:1.2rem}
+.cv-section-mini{margin-bottom:1rem}
+.cv-section-mini h4{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:6px;
+  padding-bottom:4px;
+  border-bottom:0.5px solid var(--border);
+}
+.cv-line{
+  display:flex;align-items:center;gap:8px;
+  font-size:12px;margin-bottom:4px;color:var(--ink);
+}
+.cv-dot{
+  width:5px;height:5px;
+  background:var(--accent);
+  border-radius:50%;flex-shrink:0;
+}
+.cv-skill-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:4px}
+.cv-skill{
+  font-size:10px;
+  font-family:'IBM Plex Mono',monospace;
+  background:var(--accent-light);
+  color:var(--accent);
+  padding:3px 8px;
+  border-radius:100px;
+}
+.cv-bar-row{display:flex;align-items:center;gap:8px;font-size:11px;margin-bottom:5px}
+.cv-bar-label{min-width:70px;color:var(--muted);font-size:11px}
+.cv-bar{flex:1;height:3px;background:#eee;border-radius:2px}
+.cv-bar-fill{height:100%;background:var(--accent);border-radius:2px}
+
+/* SECCIONES */
+.container{max-width:1100px;margin:0 auto;padding:0 3rem}
+
+/* STEPS */
+.steps-section{padding:5rem 0;border-top:1px solid var(--border)}
+
+.section-eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--accent-mid);
+  margin-bottom:1rem;
+}
+
+.section-title{
+  font-family:'Fraunces',serif;
+  font-size:38px;
+  font-weight:600;
+  line-height:1.1;
+  letter-spacing:-0.02em;
+  margin-bottom:3rem;
+}
+
+.steps-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:1px;
+  background:var(--border);
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+}
+
+.step-card{
+  background:var(--card);
+  padding:2rem;
+  position:relative;
+  transition:background .2s;
+}
+.step-card:hover{background:#f5f9f7}
+
+.step-num{
+  font-family:'Fraunces',serif;
+  font-size:52px;
+  font-weight:300;
+  color:var(--accent-light);
+  line-height:1;
+  margin-bottom:0.8rem;
+  -webkit-text-stroke:1px var(--accent-mid);
+  color:transparent;
+}
+
+.step-card h3{font-size:17px;font-weight:700;margin-bottom:0.6rem}
+.step-card p{font-size:13px;color:var(--muted);line-height:1.6}
+
+/* BLOQUES SECCIÓN */
+.block-section{
+  padding:5rem 0;
+  border-top:1px solid var(--border);
+}
+
+.block-layout{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:4rem;
+  align-items:start;
+}
+
+.block-sticky{position:sticky;top:80px}
+
+/* ITEMS DE CONTENIDO */
+.content-item{
+  padding:1.5rem 0;
+  border-bottom:0.5px solid var(--border);
+  display:grid;
+  grid-template-columns:36px 1fr;
+  gap:1rem;
+  align-items:start;
+}
+.content-item:last-child{border-bottom:none}
+
+.item-icon{
+  width:36px;height:36px;
+  background:var(--accent-light);
+  border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+}
+.item-icon svg{width:18px;height:18px;stroke:var(--accent);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+.item-text h4{font-size:15px;font-weight:700;margin-bottom:4px}
+.item-text p{font-size:13px;color:var(--muted);line-height:1.5}
+
+/* ERRORES COMUNES */
+.errors-section{padding:5rem 0;border-top:1px solid var(--border);background:var(--bg)}
+
+.error-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+.error-card{
+  padding:1.2rem 1.5rem;
+  border-radius:12px;
+  display:grid;
+  grid-template-columns:24px 1fr;
+  gap:12px;
+  align-items:start;
+}
+
+.error-bad{background:var(--danger-light);border:0.5px solid #f09595}
+.error-good{background:var(--accent-light);border:0.5px solid #97c459}
+
+.error-icon{font-size:16px;margin-top:2px}
+.error-bad .error-icon{color:var(--danger)}
+.error-good .error-icon{color:var(--accent)}
+
+.error-card h4{font-size:13px;font-weight:700;margin-bottom:3px}
+.error-bad h4{color:#791f1f}
+.error-good h4{color:#27500a}
+.error-card p{font-size:12px;line-height:1.5}
+.error-bad p{color:#a32d2d}
+.error-good p{color:#3b6d11}
+
+/* TIPS */
+.tips-section{padding:5rem 0;border-top:1px solid var(--border)}
+
+.tips-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+
+.tip-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:1.5rem;
+}
+
+.tip-num{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:var(--muted);
+  margin-bottom:0.8rem;
+}
+
+.tip-card h4{font-size:14px;font-weight:700;margin-bottom:6px}
+.tip-card p{font-size:12px;color:var(--muted);line-height:1.5}
+
+/* PLANTILLA */
+.template-section{
+  padding:5rem 0;
+  border-top:1px solid var(--border);
+}
+
+.template-layout{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:3rem;
+  align-items:start;
+}
+
+.template-box{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:16px;
+  overflow:hidden;
+}
+
+.template-header{
+  background:var(--ink);
+  padding:1rem 1.5rem;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+}
+
+.template-header span{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  color:rgba(255,255,255,0.5);
+}
+
+.template-dots{display:flex;gap:6px}
+.template-dots span{
+  width:8px;height:8px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.15);
+}
+
+.template-body{padding:1.5rem;font-family:'IBM Plex Mono',monospace;font-size:12px;line-height:1.8;color:var(--ink)}
+.t-comment{color:var(--accent-mid)}
+.t-key{color:#185fa5}
+.t-val{color:#3b6d11}
+.t-bracket{color:var(--muted)}
+
+/* CHECKLIST */
+.checklist{list-style:none}
+.checklist li{
+  display:flex;align-items:flex-start;gap:10px;
+  padding:10px 0;
+  border-bottom:0.5px solid var(--border);
+  font-size:14px;
+  line-height:1.5;
+}
+.checklist li:last-child{border-bottom:none}
+.check-icon{
+  width:20px;height:20px;
+  background:var(--accent-light);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;
+  margin-top:1px;
+}
+.check-icon svg{width:11px;height:11px;stroke:var(--accent);fill:none;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:round}
+
+/* FOOTER */
+footer{
+  background:var(--ink);
+  color:rgba(255,255,255,0.4);
+  text-align:center;
+  padding:2.5rem 3rem;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.05em;
+}
+footer strong{color:#fff}
+
+@media(max-width:900px){
+  .hero{grid-template-columns:1fr;gap:2rem}
+  .steps-grid{grid-template-columns:1fr}
+  .block-layout,.template-layout,.error-grid{grid-template-columns:1fr}
+  .tips-grid{grid-template-columns:1fr 1fr}
+  .hero{padding:3rem 1.5rem}
+  .container{padding:0 1.5rem}
+  header{padding:0 1.5rem}
+  nav{display:none}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Hoja<span>.</span>Pro</div>
+  <nav>
+    <a href="#pasos" class="on">Pasos</a>
+    <a href="#secciones">Secciones</a>
+    <a href="#errores">Errores</a>
+    <a href="#tips">Tips</a>
+    <a href="#plantilla">Plantilla</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero container">
+  <div>
+    <div class="hero-label">Guía completa 2024</div>
+    <h1>Tu hoja de vida<br><em>perfecta</em><br>paso a paso</h1>
+    <p>Aprende a construir un currículum que llame la atención de los reclutadores, evite los errores más comunes y te abra las puertas al trabajo que quieres.</p>
+    <div class="hero-btns">
+      <a href="#pasos" class="btn-primary">Comenzar guía →</a>
+      <a href="#plantilla" class="btn-outline">Ver plantilla</a>
+    </div>
+  </div>
+
+  <!-- CV PREVIEW -->
+  <div class="cv-preview">
+    <div class="cv-preview-header">
+      <div class="cv-avatar">TU</div>
+      <div class="cv-name">
+        <h3>Tu nombre completo</h3>
+        <p>Desarrollador / Diseñador / Profesional</p>
+      </div>
+    </div>
+    <div class="cv-body">
+      <div class="cv-section-mini">
+        <h4>Experiencia</h4>
+        <div class="cv-line"><span class="cv-dot"></span>Empresa ABC · 2022–2024</div>
+        <div class="cv-line"><span class="cv-dot"></span>Empresa XYZ · 2020–2022</div>
+      </div>
+      <div class="cv-section-mini">
+        <h4>Educación</h4>
+        <div class="cv-line"><span class="cv-dot"></span>Ingeniería de Sistemas · 2020</div>
+      </div>
+      <div class="cv-section-mini">
+        <h4>Habilidades</h4>
+        <div class="cv-skill-row">
+          <span class="cv-skill">Java</span>
+          <span class="cv-skill">MySQL</span>
+          <span class="cv-skill">HTML</span>
+          <span class="cv-skill">Scrum</span>
+        </div>
+      </div>
+      <div class="cv-section-mini">
+        <h4>Idiomas</h4>
+        <div class="cv-bar-row"><span class="cv-bar-label">Español</span><div class="cv-bar"><div class="cv-bar-fill" style="width:100%"></div></div></div>
+        <div class="cv-bar-row"><span class="cv-bar-label">Inglés</span><div class="cv-bar"><div class="cv-bar-fill" style="width:65%"></div></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- PASOS -->
+<section class="steps-section" id="pasos">
+  <div class="container">
+    <div class="section-eyebrow">Metodología</div>
+    <div class="section-title">Los 6 pasos<br>fundamentales</div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-num">01</div>
+        <h3>Reúne tu información</h3>
+        <p>Antes de escribir, recopila tus datos: empleos anteriores con fechas exactas, títulos académicos, cursos, certificados y logros medibles.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02</div>
+        <h3>Elige el formato correcto</h3>
+        <p>Cronológico (más usados), funcional (cambios de carrera) o combinado. El formato cronológico es el estándar en Colombia y Latinoamérica.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03</div>
+        <h3>Escribe el perfil profesional</h3>
+        <p>Un párrafo de 3–4 líneas al inicio que resuma quién eres, tus años de experiencia y qué valor aportarás a la empresa.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">04</div>
+        <h3>Detalla experiencia y logros</h3>
+        <p>Cada cargo debe incluir empresa, cargo, fechas y 3–5 logros con verbos de acción y métricas concretas (aumenté ventas 30%).</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">05</div>
+        <h3>Añade formación y habilidades</h3>
+        <p>Incluye títulos, cursos relevantes, certificaciones y habilidades técnicas y blandas ordenadas por relevancia para el cargo.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">06</div>
+        <h3>Revisa, afina y adapta</h3>
+        <p>Corrige ortografía, verifica coherencia visual y adapta la hoja de vida a cada oferta laboral antes de enviarla.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECCIONES DE LA HOJA -->
+<section class="block-section" id="secciones">
+  <div class="container">
+    <div class="block-layout">
+      <div class="block-sticky">
+        <div class="section-eyebrow">Anatomía del documento</div>
+        <div class="section-title" style="font-size:34px">Qué incluir<br>en cada sección</div>
+        <p style="font-size:14px;color:var(--muted);line-height:1.7">Una hoja de vida efectiva tiene secciones bien definidas. Aquí te explicamos el contenido de cada una y qué evitar en cada bloque.</p>
+      </div>
+      <div>
+        <div class="content-item">
+          <div class="item-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/></svg>
+          </div>
+          <div class="item-text">
+            <h4>Datos personales</h4>
+            <p>Nombre completo, ciudad, teléfono celular, correo profesional y enlace a LinkedIn o portafolio. No incluyas estado civil, edad ni foto a menos que lo pidan.</p>
+          </div>
+        </div>
+        <div class="content-item">
+          <div class="item-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M7 8h10M7 12h6"/></svg>
+          </div>
+          <div class="item-text">
+            <h4>Perfil o resumen profesional</h4>
+            <p>3–4 líneas que sintetizan tu experiencia, especialidad y propuesta de valor. Debe cambiar levemente para cada empresa a la que apliques.</p>
+          </div>
+        </div>
+        <div class="content-item">
+          <div class="item-icon">
+            <svg viewBox="0 0 24 24"><rect x="3" y="7" width="18" height="14" rx="2"/><path d="M8 7V5a2 2 0 0 1 4 0v2M12 12v4"/></svg>
+          </div>
+          <div class="item-text">
+            <h4>Experiencia laboral</h4>
+            <p>Orden cronológico inverso (lo más reciente primero). Para cada cargo: nombre de la empresa, cargo, ciudad, fechas (mes/año) y logros en viñetas.</p>
+          </div>
+        </div>
+        <div class="content-item">
+          <div class="item-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 3l9 4-9 4-9-4 9-4z"/><path d="M3 11l9 4 9-4M3 16l9 4 9-4"/></svg>
+          </div>
+          <div class="item-text">
+            <h4>Educación</h4>
+            <p>Título obtenido, nombre de la institución, año de grado o semestre en curso. Si tienes más de 5 años de experiencia, la educación va al final.</p>
+          </div>
+        </div>
+        <div class="content-item">
+          <div class="item-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
+          </div>
+          <div class="item-text">
+            <h4>Habilidades y competencias</h4>
+            <p>Separa habilidades técnicas (software, lenguajes, herramientas) de blandas (liderazgo, comunicación). Sé específico: "Excel avanzado" es mejor que "manejo de Office".</p>
+          </div>
+        </div>
+        <div class="content-item">
+          <div class="item-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/></svg>
+          </div>
+          <div class="item-text">
+            <h4>Idiomas y certificaciones</h4>
+            <p>Indica nivel según el Marco Europeo (A1–C2) o CEFR. Para certificaciones, incluye la entidad emisora y el año. Solo las que estén vigentes o sean relevantes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ERRORES COMUNES -->
+<section class="errors-section" id="errores">
+  <div class="container">
+    <div class="section-eyebrow">Evita esto</div>
+    <div class="section-title">Errores comunes<br>y cómo corregirlos</div>
+    <div class="error-grid">
+      <div class="error-card error-bad">
+        <div class="error-icon">✕</div>
+        <div>
+          <h4>Hoja de vida genérica</h4>
+          <p>Enviar el mismo documento a todas las empresas sin personalizar el perfil o las habilidades al cargo específico.</p>
+        </div>
+      </div>
+      <div class="error-card error-good">
+        <div class="error-icon">✓</div>
+        <div>
+          <h4>Adaptar para cada oferta</h4>
+          <p>Leer la descripción del cargo y ajustar las palabras clave, el perfil y los logros para que coincidan con lo que busca el reclutador.</p>
+        </div>
+      </div>
+      <div class="error-card error-bad">
+        <div class="error-icon">✕</div>
+        <div>
+          <h4>Responsabilidades sin logros</h4>
+          <p>"Responsable del área de ventas" no dice nada. Describe lo que lograste, no solo lo que hacías.</p>
+        </div>
+      </div>
+      <div class="error-card error-good">
+        <div class="error-icon">✓</div>
+        <div>
+          <h4>Logros con métricas reales</h4>
+          <p>"Aumenté las ventas un 35% en 6 meses implementando un nuevo proceso de seguimiento a clientes."</p>
+        </div>
+      </div>
+      <div class="error-card error-bad">
+        <div class="error-icon">✕</div>
+        <div>
+          <h4>Diseño sobrecargado</h4>
+          <p>Tablas complejas, muchos colores, fotos grandes o fuentes decorativas que dificultan la lectura y confunden los sistemas ATS.</p>
+        </div>
+      </div>
+      <div class="error-card error-good">
+        <div class="error-icon">✓</div>
+        <div>
+          <h4>Diseño limpio y legible</h4>
+          <p>1 o 2 colores, fuente estándar (Calibri, Arial, Garamond), márgenes generosos y jerarquía visual clara.</p>
+        </div>
+      </div>
+      <div class="error-card error-bad">
+        <div class="error-icon">✕</div>
+        <div>
+          <h4>Más de 2 páginas (sin experiencia)</h4>
+          <p>Para perfiles con menos de 10 años de experiencia, una hoja de vida de 3 páginas señala falta de síntesis.</p>
+        </div>
+      </div>
+      <div class="error-card error-good">
+        <div class="error-icon">✓</div>
+        <div>
+          <h4>1 página si tienes menos de 5 años</h4>
+          <p>Máximo 2 páginas si tienes experiencia amplia y relevante. Prioriza calidad sobre cantidad de contenido.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TIPS -->
+<section class="tips-section" id="tips">
+  <div class="container">
+    <div class="section-eyebrow">Consejos clave</div>
+    <div class="section-title">Detalles que<br>marcan la diferencia</div>
+    <div class="tips-grid">
+      <div class="tip-card">
+        <div class="tip-num">TIP 01</div>
+        <h4>Usa verbos de acción</h4>
+        <p>Empieza cada logro con: diseñé, lideré, implementé, reduje, coordiné, optimicé, aumenté. Nunca con "era responsable de".</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">TIP 02</div>
+        <h4>Guarda como PDF</h4>
+        <p>El PDF preserva el diseño en cualquier dispositivo. Nómbralo: NombreApellido_CV.pdf, nunca "Mi hoja de vida final".</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">TIP 03</div>
+        <h4>Cuida el correo electrónico</h4>
+        <p>Usa un correo profesional con tu nombre. Evita direcciones como gatito123@ o nicknames de videojuegos.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">TIP 04</div>
+        <h4>Optimiza para ATS</h4>
+        <p>Los sistemas de rastreo de candidatos filtran por palabras clave. Incluye los términos exactos de la oferta laboral en tu texto.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">TIP 05</div>
+        <h4>LinkedIn coherente</h4>
+        <p>Tu perfil de LinkedIn debe coincidir con tu hoja de vida. Los reclutadores siempre lo buscan para verificar tu información.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">TIP 06</div>
+        <h4>Pide referencias reales</h4>
+        <p>No pongas "referencias a solicitud". Prepara 2–3 contactos profesionales que puedan hablar de tu trabajo y avísales primero.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">TIP 07</div>
+        <h4>Actualiza cada 6 meses</h4>
+        <p>No esperes a estar buscando trabajo. Agrega logros y proyectos recientes mientras los tienes frescos en tu memoria.</p>
+      </div>
+      <div class="tip-card">
+        <div class="tip-num">TIP 08</div>
+        <h4>Que alguien más la revise</h4>
+        <p>La segunda lectura de otra persona detecta errores de tipeo, frases confusas e inconsistencias que tú no verás después de tantas horas.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PLANTILLA -->
+<section class="template-section" id="plantilla">
+  <div class="container">
+    <div class="section-eyebrow">Estructura base</div>
+    <div class="section-title">Plantilla y<br>lista de verificación</div>
+    <div class="template-layout">
+      <div>
+        <div class="template-box">
+          <div class="template-header">
+            <div class="template-dots"><span></span><span></span><span></span></div>
+            <span>estructura-hv.txt</span>
+          </div>
+          <div class="template-body">
+<span class="t-comment">── ENCABEZADO ──────────────</span><br>
+<span class="t-key">Nombre</span>: <span class="t-val">Nombre completo</span><br>
+<span class="t-key">Cargo objetivo</span>: <span class="t-val">Desarrollador Backend</span><br>
+<span class="t-key">Ciudad</span>: <span class="t-val">Neiva, Colombia</span><br>
+<span class="t-key">Teléfono</span>: <span class="t-val">+57 300 000 0000</span><br>
+<span class="t-key">Correo</span>: <span class="t-val">nombre@correo.com</span><br>
+<span class="t-key">LinkedIn</span>: <span class="t-val">linkedin.com/in/nombre</span><br>
+<br>
+<span class="t-comment">── PERFIL ───────────────────</span><br>
+<span class="t-bracket">[3–4 líneas: experiencia, especialidad,</span><br>
+<span class="t-bracket"> valor para la empresa]</span><br>
+<br>
+<span class="t-comment">── EXPERIENCIA ──────────────</span><br>
+<span class="t-key">Empresa</span> · <span class="t-val">Cargo</span> · <span class="t-key">2022–2024</span><br>
+  <span class="t-bracket">• Logro con métrica concreta</span><br>
+  <span class="t-bracket">• Logro con métrica concreta</span><br>
+  <span class="t-bracket">• Logro con métrica concreta</span><br>
+<br>
+<span class="t-comment">── EDUCACIÓN ────────────────</span><br>
+<span class="t-val">Título</span> · <span class="t-key">Institución</span> · <span class="t-bracket">2020</span><br>
+<br>
+<span class="t-comment">── HABILIDADES ──────────────</span><br>
+<span class="t-key">Técnicas</span>: <span class="t-val">Java, MySQL, Spring Boot</span><br>
+<span class="t-key">Blandas</span>: <span class="t-val">Liderazgo, comunicación</span><br>
+<span class="t-key">Idiomas</span>: <span class="t-val">Español nativo, Inglés B2</span><br>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <p style="font-size:14px;color:var(--muted);margin-bottom:1.5rem;line-height:1.7">Antes de enviar tu hoja de vida, revisa que tengas todos estos elementos listos:</p>
+        <ul class="checklist">
+          <li>
+            <div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5,10 12,3"/></svg></div>
+            Correo profesional con nombre propio
+          </li>
+          <li>
+            <div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5,10 12,3"/></svg></div>
+            Perfil adaptado al cargo específico
+          </li>
+          <li>
+            <div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5,10 12,3"/></svg></div>
+            Experiencia en orden cronológico inverso
+          </li>
+          <li>
+            <div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5,10 12,3"/></svg></div>
+            Mínimo 2 logros medibles por cargo
+          </li>
+          <li>
+            <div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5,10 12,3"/></svg></div>
+            Habilidades técnicas relevantes al cargo
+          </li>
+          <li>
+            <div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5,10 12,3"/></svg></div>
+            Sin errores ortográficos ni gramaticales
+          </li>
+          <li>
+            <div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5,10 12,3"/></svg></div>
+            Diseño limpio, máximo 2 colores
+          </li>
+          <li>
+            <div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5,10 12,3"/></svg></div>
+            Guardada en PDF con nombre profesional
+          </li>
+          <li>
+            <div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5,10 12,3"/></svg></div>
+            LinkedIn actualizado y coherente
+          </li>
+          <li>
+            <div class="check-icon"><svg viewBox="0 0 14 14"><polyline points="2,7 5,10 12,3"/></svg></div>
+            Revisada por otra persona de confianza
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <strong>Hoja.Pro</strong> · Guía para construir tu currículum profesional · 2024
+</footer>
+
+<script>
+const links = document.querySelectorAll('nav a');
+links.forEach(l => l.addEventListener('click', () => {
+  links.forEach(x => x.classList.remove('on'));
+  l.classList.add('on');
+}));
+
+const sections = document.querySelectorAll('section[id]');
+const obs = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      links.forEach(l => l.classList.remove('on'));
+      const a = document.querySelector(`nav a[href="#${e.target.id}"]`);
+      if(a) a.classList.add('on');
+    }
+  });
+}, {threshold:0.4});
+sections.forEach(s => obs.observe(s));
+</script>
+</body>
+</html>
