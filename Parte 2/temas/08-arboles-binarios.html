@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 08 · Árboles Binarios — Manual ED</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="../index.html">ED · Manual</a>
+  <a class="nav-back" href="../index.html">Todos los módulos</a>
+</nav>
+
+<!-- HERO TEMA -->
+<section class="hero-tema">
+  <div class="orb orb-a"></div>
+  <div class="orb orb-b"></div>
+  <div class="orb orb-c"></div>
+  <span class="hero-label">Módulo 08</span>
+  <h1>🌳 <span>Árboles Binarios</span></h1>
+  <p class="desc">Estructura jerárquica donde cada nodo tiene a lo sumo dos hijos.</p>
+  <div class="hero-tags">
+    <span class="htag">Raíz</span><span class="htag">Hijos</span><span class="htag">Recorrido</span>
+  </div>
+</section>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" data-tab="doc">📄 Documentación</button>
+  <button class="tab-btn" data-tab="ejemplos">💻 Ejemplos</button>
+  <button class="tab-btn" data-tab="retos">🎯 Retos</button>
+  <button class="tab-btn" data-tab="video">🎬 Clip explicativo</button>
+</div>
+
+<!-- ══ DOCUMENTACIÓN ══ -->
+<div id="tab-doc" class="tab-content active">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Documentación</h2>
+      <div class="line"></div>
+      <span class="num">MÓDULO 08</span>
+    </div>
+    <div class="doc-grid">
+      <div class="doc-card full-width">
+        <h3>Definición y características</h3>
+        <ul>
+          <li>Un árbol binario es una estructura donde cada nodo tiene como máximo dos hijos: izquierdo y derecho.</li><li>El nodo inicial se llama raíz; los nodos sin hijos son hojas.</li><li>Los recorridos clásicos son: preorden (raíz, izq, der), inorden (izq, raíz, der) y postorden (izq, der, raíz).</li><li>Son la base de estructuras más complejas como BST, AVL, heaps y tries.</li>
+        </ul>
+      </div>
+      <div class="doc-card">
+        <h3>Casos de uso</h3>
+        <p>Revisa los ejemplos de código en la pestaña <strong style="color:var(--accent)">Ejemplos</strong> para ver aplicaciones prácticas de esta estructura.</p>
+      </div>
+      <div class="doc-card">
+        <h3>Etiquetas del tema</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+          <span class="htag">Raíz</span><span class="htag">Hijos</span><span class="htag">Recorrido</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ EJEMPLOS ══ -->
+<div id="tab-ejemplos" class="tab-content">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Ejemplos</h2>
+      <div class="line"></div>
+      <span class="num">2 EJEMPLOS</span>
+    </div>
+    <div class="examples-list">
+
+      <div class="example-block">
+        <div class="example-header">
+          <span class="example-num">Ejemplo 01</span>
+          <h3>Clase Nodo árbol</h3>
+        </div>
+        <div class="code-area"><pre>class Nodo:
+    def __init__(self, valor):
+        self.valor = valor
+        self.izq = None
+        self.der = None</pre></div>
+        <div class="example-exp">La clase base del árbol. Cada nodo guarda un valor y referencias a sus dos posibles hijos.</div>
+      </div>
+
+      <div class="example-block">
+        <div class="example-header">
+          <span class="example-num">Ejemplo 02</span>
+          <h3>Construir árbol</h3>
+        </div>
+        <div class="code-area"><pre>raiz = Nodo(1)
+raiz.izq = Nodo(2)
+raiz.der = Nodo(3)
+raiz.izq.izq = Nodo(4)</pre></div>
+        <div class="example-exp">Construimos un árbol manualmente. La raíz es 1, tiene hijos 2 y 3; el nodo 2 tiene hijo izquierdo 4.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ RETOS ══ -->
+<div id="tab-retos" class="tab-content">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Retos de Práctica</h2>
+      <div class="line"></div>
+      <span class="num">2 RETOS</span>
+    </div>
+    <div class="retos-list">
+
+      <div class="reto-card">
+        <span class="reto-num">🎯 Reto 01</span>
+        <h3>Árbol de 7 nodos</h3>
+        <p>Crear un árbol binario de 7 nodos e implementar el recorrido preorden.</p>
+        <div class="pista">
+          <span>💡 Pista</span>
+          <p>Preorden = raíz primero, luego recursivamente izquierdo, luego derecho.</p>
+        </div>
+      </div>
+
+      <div class="reto-card">
+        <span class="reto-num">🎯 Reto 02</span>
+        <h3>Contar hojas</h3>
+        <p>Contar el número de hojas de un árbol binario de forma recursiva.</p>
+        <div class="pista">
+          <span>💡 Pista</span>
+          <p>Un nodo es hoja si nodo.izq is None and nodo.der is None.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ VIDEO ══ -->
+<div id="tab-video" class="tab-content">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Clip Explicativo</h2>
+      <div class="line"></div>
+      <span class="num">VIDEO</span>
+    </div>
+    <div class="video-wrap">
+      
+        <div class="video-placeholder">
+          <div class="video-icon">▶</div>
+          <p>Video pendiente de subir</p>
+        </div>
+      <div class="video-info">
+        <h3>Árboles Binarios</h3>
+        <p>Video animado que muestra la estructura y los tres tipos de recorrido.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  Manual Web · Estructuras de Datos — Módulo 08 · <a href="../index.html">← Volver al índice</a>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>

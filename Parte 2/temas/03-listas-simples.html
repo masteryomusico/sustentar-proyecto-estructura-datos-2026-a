@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Módulo 03 · Listas Simples — Manual ED</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAV -->
+<nav class="nav">
+  <a class="nav-logo" href="../index.html">ED · Manual</a>
+  <a class="nav-back" href="../index.html">Todos los módulos</a>
+</nav>
+
+<!-- HERO TEMA -->
+<section class="hero-tema">
+  <div class="orb orb-a"></div>
+  <div class="orb orb-b"></div>
+  <div class="orb orb-c"></div>
+  <span class="hero-label">Módulo 03</span>
+  <h1>🔗 <span>Listas Simples</span></h1>
+  <p class="desc">Estructura dinámica donde cada nodo apunta al siguiente.</p>
+  <div class="hero-tags">
+    <span class="htag">Nodos</span><span class="htag">Punteros</span><span class="htag">Enlazado</span>
+  </div>
+</section>
+
+<!-- TABS -->
+<div class="tabs">
+  <button class="tab-btn active" data-tab="doc">📄 Documentación</button>
+  <button class="tab-btn" data-tab="ejemplos">💻 Ejemplos</button>
+  <button class="tab-btn" data-tab="retos">🎯 Retos</button>
+  <button class="tab-btn" data-tab="video">🎬 Clip explicativo</button>
+</div>
+
+<!-- ══ DOCUMENTACIÓN ══ -->
+<div id="tab-doc" class="tab-content active">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Documentación</h2>
+      <div class="line"></div>
+      <span class="num">MÓDULO 03</span>
+    </div>
+    <div class="doc-grid">
+      <div class="doc-card full-width">
+        <h3>Definición y características</h3>
+        <ul>
+          <li>Una lista enlazada simple consiste en nodos donde cada uno guarda un dato y un puntero al siguiente nodo.</li><li>La inserción al inicio o en medio es O(1) si ya tienes el nodo previo, a diferencia de los arrays.</li><li>No requiere memoria contigua: los nodos pueden estar dispersos en la memoria.</li><li>El recorrido es siempre secuencial O(n), no hay acceso aleatorio por índice.</li>
+        </ul>
+      </div>
+      <div class="doc-card">
+        <h3>Casos de uso</h3>
+        <p>Revisa los ejemplos de código en la pestaña <strong style="color:var(--accent)">Ejemplos</strong> para ver aplicaciones prácticas de esta estructura.</p>
+      </div>
+      <div class="doc-card">
+        <h3>Etiquetas del tema</h3>
+        <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:4px">
+          <span class="htag">Nodos</span><span class="htag">Punteros</span><span class="htag">Enlazado</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ EJEMPLOS ══ -->
+<div id="tab-ejemplos" class="tab-content">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Ejemplos</h2>
+      <div class="line"></div>
+      <span class="num">2 EJEMPLOS</span>
+    </div>
+    <div class="examples-list">
+
+      <div class="example-block">
+        <div class="example-header">
+          <span class="example-num">Ejemplo 01</span>
+          <h3>Clase Nodo</h3>
+        </div>
+        <div class="code-area"><pre>class Nodo:
+    def __init__(self, dato):
+        self.dato = dato
+        self.siguiente = None</pre></div>
+        <div class="example-exp">Definimos la clase base. Cada nodo tiene un dato y una referencia al próximo nodo (None si es el último).</div>
+      </div>
+
+      <div class="example-block">
+        <div class="example-header">
+          <span class="example-num">Ejemplo 02</span>
+          <h3>Enlazar nodos</h3>
+        </div>
+        <div class="code-area"><pre>n1 = Nodo(10)
+n2 = Nodo(20)
+n1.siguiente = n2
+print(n1.siguiente.dato)  # 20</pre></div>
+        <div class="example-exp">Enlazamos n1 → n2. Para recorrer la lista avanzamos por los punteros siguiente.</div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ RETOS ══ -->
+<div id="tab-retos" class="tab-content">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Retos de Práctica</h2>
+      <div class="line"></div>
+      <span class="num">2 RETOS</span>
+    </div>
+    <div class="retos-list">
+
+      <div class="reto-card">
+        <span class="reto-num">🎯 Reto 01</span>
+        <h3>Lista con 4 nodos</h3>
+        <p>Crear una lista enlazada con 4 nodos e insertar uno al inicio.</p>
+        <div class="pista">
+          <span>💡 Pista</span>
+          <p>Guarda la referencia al nodo cabeza. Para insertar al inicio, haz que el nuevo nodo apunte al actual head.</p>
+        </div>
+      </div>
+
+      <div class="reto-card">
+        <span class="reto-num">🎯 Reto 02</span>
+        <h3>Recorrer e imprimir</h3>
+        <p>Recorrer una lista e imprimir todos los valores.</p>
+        <div class="pista">
+          <span>💡 Pista</span>
+          <p>Usa un puntero actual = head y avanza con actual = actual.siguiente hasta que sea None.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══ VIDEO ══ -->
+<div id="tab-video" class="tab-content">
+  <div class="content-wrap">
+    <div class="section-hdr">
+      <h2>Clip Explicativo</h2>
+      <div class="line"></div>
+      <span class="num">VIDEO</span>
+    </div>
+    <div class="video-wrap">
+      
+        <div class="video-placeholder">
+          <div class="video-icon">▶</div>
+          <p>Video pendiente de subir</p>
+        </div>
+      <div class="video-info">
+        <h3>Listas Enlazadas Simples</h3>
+        <p>Video que muestra visualmente cómo los nodos se enlazan y cómo insertar/eliminar.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="footer">
+  Manual Web · Estructuras de Datos — Módulo 03 · <a href="../index.html">← Volver al índice</a>
+</footer>
+
+<script src="../js/main.js"></script>
+</body>
+</html>
